@@ -33,16 +33,16 @@ public class TestDom {
 		final String fileName = "C:\\felix\\project\\bigdata\\PCC\\doc\\task\\pgdata-collection-code\\doc\\test.xml";
 		
 		// 解析xml
-		parseXml(fileName);
+		List<List<String>> list = parseXml(fileName);
 		
 //		System.out.println("------带有命名空间--------");
 //		parseXmlWithNamespace2(fileName);
 		
 		// 将解析后的数据存储到hdfs上
-//		createFile2Hdfs();
+		createFile2Hdfs(list);
 		
 		// 将文件从hdfs存储到hive
-//		loadFile2Hive();
+		loadFile2Hive();
 		/*final long timeInterval = 2000;	//24 * 60 * 60 * 1000;
 		Runnable runnable = new Runnable() {
 
@@ -71,9 +71,9 @@ public class TestDom {
 	 * @throws Exception
 	 * @desc 将数据存储为hdfs文件
 	 */
-	public static void createFile2Hdfs(List<List> argList) throws Exception {
+	public static void createFile2Hdfs(List<List<String>> argList) throws Exception {
 		
-//		List<List> argList = new ArrayList<List>();
+//		List<List<String>> argList = new ArrayList<List<String>>();
 //		List<String> arg = new ArrayList<String>();
 //		arg.add("001");
 //		arg.add("aaa");
@@ -132,13 +132,13 @@ public class TestDom {
 	
 	/**
 	 * @param fileName
-	 * @return List<List>
+	 * @return List<List<String>>
 	 * @desc 读取xml两个节点的值，根据两节点的属性r的值进行匹配
 	 */
-	public static List<List> parseXml(String fileName) {
+	public static List<List<String>> parseXml(String fileName) {
         File inputXml = new File(fileName);
         SAXReader saxReader = new SAXReader();
-        List<List> result = new ArrayList<List>();
+        List<List<String>> result = new ArrayList<List<String>>();
 
         try {
             Document document = saxReader.read(inputXml);
