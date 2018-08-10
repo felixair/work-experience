@@ -3,5 +3,7 @@
 # IntelliJ project files
 .idea
 *.iml
+*.class
+*.lst
 out
 gen
