@@ -1,6 +1,7 @@
 package com.felix.csvoper
 
 import org.apache.log4j.PropertyConfigurator
+import org.apache.spark.{SparkConf, SparkContext}
 
 object LoadPgToHdfs {
 
