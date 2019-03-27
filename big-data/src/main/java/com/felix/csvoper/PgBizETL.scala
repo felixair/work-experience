@@ -32,6 +32,9 @@ object PgBizETL {
 
     val url = "jdbc:mysql://10.163.170.90:3306/pcc?useUnicode=true&characterEncoding=UTF-8"
 
+    // this is for .toDF()
+    import sqlContext.implicits._
+
     val lines = sc.textFile("output/pg")
     val fileRDD = lines.map(_.split("\\~", -1))
     val pgDF = fileRDD.filter(arr => "SUCCESSFUL".equals(arr(6))).map(arr => PgData(arr(3), arr(14), arr(5), arr(6), arr(18), arr(19), arr(22), arr(26), arr(27), arr(33))).toDF()

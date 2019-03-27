@@ -3,6 +3,8 @@ package com.felix.csvoper
 import java.util.Properties
 
 import org.apache.log4j.PropertyConfigurator
+import org.apache.spark.sql.{SQLContext, SaveMode}
+import org.apache.spark.{SparkConf, SparkContext}
 import org.slf4j.LoggerFactory
 
 /**
@@ -31,6 +33,9 @@ object SmsBizETL {
     val url = "jdbc:mysql://10.163.170.90:3306/pcc?useUnicode=true&characterEncoding=UTF-8"
     val table = "config"
     val configDF = sqlContext.read.jdbc(url, table, mysqlProps).cache()
+
+    // this is for .toDF()
+    import sqlContext.implicits._
 
     val lines = sc.textFile("output/sms")
     val fileRDD = lines.map(_.split("\\,", -1))
