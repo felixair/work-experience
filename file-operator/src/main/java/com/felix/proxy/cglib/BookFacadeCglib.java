@@ -11,11 +11,10 @@ public class BookFacadeCglib implements MethodInterceptor {
     private Object target;
 
     /**
-           * 创建代理对象
-           *
-           * @param target
-           * @return
-           */
+     * 创建代理对象
+     * @param target
+     * @return
+     */
     public Object getInstance(Object target) {
         this.target = target;
         Enhancer enhancer = new Enhancer();
