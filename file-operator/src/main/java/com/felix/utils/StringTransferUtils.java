@@ -47,6 +47,8 @@ public class StringTransferUtils {
         return bytes2BinStr(hexStr2BinArr(hexString));
     }
 
+
+
     public static void main(String[] args) {
         String str = hexStr2BinStr("0025F040800198");
         System.out.println("binary GUMMEI is : " + str);
@@ -55,7 +57,7 @@ public class StringTransferUtils {
 
         System.out.println("binary MMEI is : " + MMEI);
 
-        String MMECode = MMEI.substring(MMEI.length() - 8, MMEI.length());
+        String MMECode = MMEI.substring(MMEI.length() - 8);
         String MMEGroupId = MMEI.substring(0, MMEI.length() - 8);
 
         System.out.println("binary MMECode is : " + MMECode);

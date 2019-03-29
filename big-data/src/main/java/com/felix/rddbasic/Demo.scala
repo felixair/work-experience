@@ -1,7 +1,9 @@
 package com.felix.rddbasic
 
-import org.apache.spark.SparkConf
-import org.apache.spark.sql.SparkSession
+import com.felix.utils.StringTransferUtils
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, Row, SQLContext, SparkSession}
 
 /**
   * Author: Kefu Qin
@@ -10,6 +12,7 @@ import org.apache.spark.sql.SparkSession
   **/
 object Demo {
 
+  private var spark: SparkSession = _
 
   def main(args: Array[String]): Unit = {
     //    testConnHive()
@@ -17,11 +20,54 @@ object Demo {
     //    wordCount()
 
     //    mapPart()
-    calSum()
+//    calSum()
+    calMme().show()
+  }
+
+  def testEmptyDF(): DataFrame = {
+    val conf = new SparkConf().setAppName("Test").setMaster("local")
+    spark = SparkSession.builder().enableHiveSupport().config(conf).getOrCreate()
+    val tem = "MMEGroupId"
+    val colNames = Array(tem, "MMECode", "EVENTID")
+    //为了简单起见，字段类型都为String
+    val schema = StructType(colNames.map(fieldName => StructField(fieldName, StringType, true)))
+    //主要是利用了spark.sparkContext.emptyRDD
+    val emptyDf = spark.createDataFrame(spark.sparkContext.emptyRDD[Row], schema)
+    emptyDf
+  }
+
+  def calMme(): DataFrame = {
+    val conf = new SparkConf().setAppName("PgBizETL").setMaster("local")
+    val sc = new SparkContext(conf)
+    val sqlContext = new SQLContext(sc)
+    import sqlContext.implicits._
+    val gummeiDF = sqlContext.createDataFrame(Seq(
+      ("0025F040800198", 137),
+      ("0025F040800170", 1),
+      ("0025F040800178", 12)
+    )).toDF("GUMMEI", "EVENTID")
+
+    val resultDF = gummeiDF.map(line => splitGummei(line.get(0).toString, line.get(1).toString)).toDF("MMEGroupId", "MMECode", "EVENTID")
+
+    return resultDF
+
+  }
+
+  def splitGummei(guemmi: String, eventId: String): (String, String, String) = {
+    var binStr = StringTransferUtils.hexStr2BinStr(guemmi)
+    var MMEI = binStr.substring(binStr.length - 24)
+
+    var MMEGroupId2bin = MMEI.substring(0, MMEI.length - 8)
+    var MMECode2bin = MMEI.substring(MMEI.length - 8)
+
+    var MMEGroupId = Integer.parseInt(MMEGroupId2bin, 2).toString
+    var MMECode = Integer.parseInt(MMECode2bin, 2).toString
+    (MMEGroupId, MMECode, eventId)
   }
 
 
-  def calSum(): Unit ={
+
+  def calSum(): Unit = {
     val conf = new SparkConf().setAppName("GroupSort").setMaster("local")
     val spark = SparkSession.builder().enableHiveSupport().config(conf).getOrCreate()
     val sc = spark.sparkContext
