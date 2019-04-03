@@ -1,9 +1,9 @@
-package com.felix.thread;
+package com.felix.watchservice;
 
 import java.io.File;
 import java.nio.file.*;
 
-public class ThreadTest {
+public class WatchServiceSimple {
     public static void main(String[] args) throws Exception {
 
         String rootPath = System.getProperty("user.dir");

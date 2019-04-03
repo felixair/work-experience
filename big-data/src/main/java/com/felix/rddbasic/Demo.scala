@@ -21,7 +21,16 @@ object Demo {
 
     //    mapPart()
 //    calSum()
-    calMme().show()
+//    calMme().show()
+
+    val res0 = "C"::"D"::Nil
+    val res1 = "A"+:"B"+:Nil
+    val res000 = res0 :: res1
+    println(res000)
+
+    val res111 = res0 ::: res1
+    println(res111)
+
   }
 
   def testEmptyDF(): DataFrame = {
