@@ -20,10 +20,14 @@ public class ReadBigFile {
         System.out.println("--------------------------------------");
         readByBufferReader();
         System.out.println("======================================");
+
     }
 
+    BufferedReader b;
+    InputStream c;
 
-    public static void fileCopySimple() throws Exception{
+
+    public static void fileCopySimple() throws Exception {
         System.out.println("[fileCopySimple] start！");
         Long startTime = System.currentTimeMillis();
 

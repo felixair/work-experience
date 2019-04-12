@@ -16,7 +16,7 @@ public class WatchServiceDemo {
         System.out.println(System.getProperty("user.dir"));
         String projectPath = System.getProperty("user.dir");
 
-        Path curPath = Paths.get(projectPath);
+        Path curPath = Paths.get(projectPath + File.separator + "file-operator" + File.separator + "conf");
         WatchService watchService = curPath.getFileSystem().newWatchService();
         walkAndRegisterDirectories(curPath, watchService);
         try {
