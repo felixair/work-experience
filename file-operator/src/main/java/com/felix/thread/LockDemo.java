@@ -5,21 +5,17 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class LockDemo {
-    private ArrayList<Integer> arrayList = new ArrayList<Integer>();
+    private ArrayList<Integer> arrayList = new ArrayList<>();
     private Lock lock = new ReentrantLock();    //注意这个地方
     public static void main(String[] args)  {
         final LockDemo test = new LockDemo();
 
-        new Thread(){
-            public void run() {
-                test.insert(Thread.currentThread());
-            };
-        }.start();
+        new Thread(() -> test.insert(Thread.currentThread())).start();
 
         new Thread(){
             public void run() {
                 test.insert(Thread.currentThread());
-            };
+            }
         }.start();
     }
 

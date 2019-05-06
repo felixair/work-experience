@@ -30,8 +30,35 @@ object Demo {
 
     val res111 = res0 ::: res1
     println(res111)
-
+    dfForEach()
   }
+
+  def dfForEach(): Unit = {
+    val conf = new SparkConf().setAppName("PgBizETL").setMaster("local")
+    val sc = new SparkContext(conf)
+    val sqlContext = new SQLContext(sc)
+    import sqlContext.implicits._
+    val gummeiDF = sqlContext.createDataFrame(Seq(
+      ("0025F040800198", 137),
+      ("0025F040800170", 1),
+      ("0025F040800178", 12)
+    )).toDF("GUMMEI", "EVENTID")
+//    val gummeiDF = testEmptyDF()
+
+    gummeiDF.foreach(row => chooseExecuteData(row))
+
+    println("===========================================")
+
+    val dataTypeArray = gummeiDF.collect()
+    for (i <- 0 until dataTypeArray.length) {
+      chooseExecuteData(dataTypeArray(i))
+    }
+  }
+
+  def chooseExecuteData(rowLine: Row): Unit = {
+    println("======", rowLine.get(0).toString, "==========")
+  }
+
 
   def testEmptyDF(): DataFrame = {
     val conf = new SparkConf().setAppName("Test").setMaster("local")
