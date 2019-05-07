@@ -17,7 +17,13 @@ public class ConsumerMQ {
         consumer.setInstanceName("rmq-instance");
         consumer.subscribe("demo-topic", "demo-tag");
 
-        consumer.registerMessageListener(new MessageListenerConcurrently() {
+        consumer.registerMessageListener((List<MessageExt> msgs, ConsumeConcurrentlyContext context) -> {
+            for (MessageExt msg : msgs) {
+                System.out.println(new String(msg.getBody()));
+            }
+            return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+        });
+        /*consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(
                     List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
@@ -26,7 +32,7 @@ public class ConsumerMQ {
                 }
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
-        });
+        });*/
         consumer.start();
         System.out.println("Consumer Started.");
     }
