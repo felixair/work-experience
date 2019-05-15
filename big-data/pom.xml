@@ -13,6 +13,8 @@
     <properties>
         <spark.version>2.4.0-cdh6.1.0</spark.version>
         <hadoop.version>3.0.0-cdh6.1.0</hadoop.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
     <dependencies>
